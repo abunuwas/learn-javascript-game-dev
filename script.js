@@ -9,7 +9,41 @@ var dy = -2;
 
 var ballRadius = 10;
 
-var color = '#0095DD'
+var color = '#0095DD';
+
+var paddleHeight = 10;
+var paddleWidth = 75;
+var paddleX = (canvas.width-paddleWidth)/2;
+
+var rightPressed = false;
+var leftPressed = false;
+
+document.addEventListener(
+						  'keydown', 
+						   keyDownHandler, 
+					   	   false);
+document.addEventListener(
+						  'keyup', 
+						  keyUpHandler, 
+						  false);
+
+function keyDownHandler(e) {
+	if(e.keyCode == 39) {
+		rightPressed = true;
+	}
+	else if(e.keyCode == 37) {
+		leftPressed = true;
+	};
+};
+
+function keyUpHandler(e) {
+	if(e.keyCode == 39) {
+		rightPressed = false;
+	}
+	else if(e.keyCode == 37) {
+		leftPressed = false;
+	};
+};
 
 function drawBall() {
 	ctx.beginPath();
@@ -19,21 +53,42 @@ function drawBall() {
 	ctx.closePath();
 };
 
+function drawPaddle() {
+	ctx.beginPath();
+	ctx.rect(
+		paddleX, 
+		canvas.height-paddleHeight, 
+		paddleWidth, 
+		paddleHeight
+		);
+	ctx.fillStyle = '#0995DD';
+	ctx.fill();
+	ctx.closePath();
+}
+
 function draw() {
 	// drawing code
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	drawBall();
+	drawPaddle();
 	if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
 		dy = -dy
 		color = 'black';
-	}
+	};
 	if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
 		dx = -dx;
 		color = 'red';
-	}
+	};
 
 	y += dy;
 	x += dx;
+
+	if(rightPressed && paddleX < canvas.width-paddleWidth) {
+		paddleX += 7;
+	}
+	else if(leftPressed && paddleX > 0) {
+		paddleX -= 7;
+	};
 };
 
 setInterval(draw, 10);
