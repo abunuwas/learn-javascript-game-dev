@@ -77,12 +77,14 @@ function collisionDetection() {
 	for(c=0; c < brickColumnCount; c++) {
 		for(r=0; r < brickRowCount; r++) {
 			var b = bricks[c][r];
-			if(x > b.x &&
-				x < b.x+brickWidth &&
-				y > b.y &&
-				y < b.y+brickHeight) {
-				dy = -dy;
-			b.status = 0;
+			if(b.status == 1) {
+				if(x > b.x &&
+					x < b.x+brickWidth &&
+					y > b.y &&
+					y < b.y+brickHeight) {
+					dy = -dy;
+				b.status = 0;				
+				};
 			};
 		};
 	};
@@ -134,13 +136,14 @@ function draw() {
 	drawBall();
 	drawPaddle();
 	collisionDetection();
-	
+
 	if(y + dy < ballRadius) {
 		dy = -dy
 		color = 'black';
 	}
 	else if(y + dy > canvas.height-ballRadius) {
-		if(x > paddleX && x < paddleX + paddleWidth) {
+		if(x+ballRadius > paddleX && 
+			x+ballRadius < paddleX+paddleWidth) {
 			dy = -dy;
 		}
 		else {
