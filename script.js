@@ -44,18 +44,25 @@ for(var c = 0; c < brickColumnCount; c++) {
 	};
 };
 
-// Scoring variables
+// Score variables
 var score = 0;
 
-// Register keyboard event listeners
+// Add event listeners
 document.addEventListener(
 						  'keydown', 
 						   keyDownHandler, 
-					   	   false);
+					   	   false
+					   	   );
 document.addEventListener(
 						  'keyup', 
 						  keyUpHandler, 
-						  false);
+						  false
+						  );
+document.addEventListener(
+						  'mousemove',
+						  mouseMoveHandler,
+						  false
+						  );
 
 // Functions 
 function keyDownHandler(e) {
@@ -76,6 +83,14 @@ function keyUpHandler(e) {
 	};
 };
 
+function mouseMoveHandler(e) {
+	var relativeX = e.clientX - canvas.offsetLeft;
+	if(relativeX > 0 && 
+		relativeX < canvas.width) {
+		paddleX = relativeX - paddleWidth/2;
+	};
+};
+
 function collisionDetection() {
 	for(c=0; c < brickColumnCount; c++) {
 		for(r=0; r < brickRowCount; r++) {
@@ -88,7 +103,7 @@ function collisionDetection() {
 					dy = -dy;
 				b.status = 0;	
 				score++;	
-				if(score == brickRowCount*brickCoumnCount) {
+				if(score == brickRowCount*brickColumnCount) {
 					alert('YOU WIN, CONGRATULATIONS!')
 					document.location.reload();
 					};		
